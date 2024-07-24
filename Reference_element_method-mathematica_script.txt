@@ -1,0 +1,64 @@
+G = 4*c1*c2*H12 + 4*c2*c3*H23 + 4*c1*c3*H13 + 4*c1*c4*H14 + 
+  4*c2*c4*H24 + 4*c3*c4*H34 + 
+  R*T*(c1*Log[c1] + c2*Log[c2] + c3*Log[c3] + c4*Log[c4])
+
+Tmatrix = {{-1, -3^(-1/2), -6^(-1/2)}, {1, -3^(-1/2), -6^(-1/2)}, {0, 
+   2*3^(-1/2), -6^(-1/2)}}
+
+#################################
+#Select only one element as the reference element!
+
+c4 = 1 - c1 - c2 - c3
+Hmatrix4 = D[G, {{c1, c2, c3}, 2}]
+
+c3 = 1 - c1 - c2 - c4
+Hmatrix3 = D[G, {{c1, c2, c4}, 2}]
+
+c2 = 1 - c1 - c4 - c3
+Hmatrix2 = D[G, {{c1, c3, c4}, 2}]
+
+c1 = 1 - c4 - c2 - c3
+Hmatrix1 = D[G, {{c2, c3, c4}, 2}]
+####################################
+
+
+######################################
+#Run only one calculation based on the selection of the reference element!
+
+HBarmatrix4 = Dot[Transpose[Tmatrix], Hmatrix4, Tmatrix]
+Eigenvectors4 = Eigenvectors[HBarmatrix4]
+Eigenvalues4 = Eigenvalues[HBarmatrix4]
+Directions4 = Transpose[Dot[Tmatrix, Transpose[Eigenvectors4]]]
+
+HBarmatrix3 = Dot[Transpose[Tmatrix], Hmatrix3, Tmatrix]
+Eigenvectors3 = Eigenvectors[HBarmatrix3]
+Eigenvalues3 = Eigenvalues[HBarmatrix3]
+Directions3 = Transpose[Dot[Tmatrix, Transpose[Eigenvectors3]]]
+
+HBarmatrix2 = Dot[Transpose[Tmatrix], Hmatrix2, Tmatrix]
+Eigenvectors2 = Eigenvectors[HBarmatrix2]
+Eigenvalues2 = Eigenvalues[HBarmatrix2]
+Directions2 = Transpose[Dot[Tmatrix, Transpose[Eigenvectors2]]]
+
+HBarmatrix1 = Dot[Transpose[Tmatrix], Hmatrix1, Tmatrix]
+Eigenvectors1 = Eigenvectors[HBarmatrix1]
+Eigenvalues1 = Eigenvalues[HBarmatrix1]
+Directions1 = Transpose[Dot[Tmatrix, Transpose[Eigenvectors1]]]
+######################################
+
+#############
+#source data
+#(*1:Fe 2:Co 3:Ni 4:Cu*)
+c1 = 0.15
+c2 = 0.15
+c3 = 0.35
+c4 = 0.35
+
+H12 = -600
+H13 = -1600
+H14 = 12900
+H23 = -200
+H24 = 6400
+H34 = 3600
+T = 1100
+R = 8.314
